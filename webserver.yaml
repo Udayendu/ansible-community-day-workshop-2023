@@ -1,0 +1,59 @@
+# VM Deploy, Guest OS customization and Delete roles
+- hosts: webserver
+  connection: local
+  tags: deploy
+  gather_facts: no
+  tasks:
+    - name: Deploy the webservers
+      include_role:
+        name: deploy
+
+- hosts: gowebserver
+  connection: ssh
+  tags: oscustom
+  gather_facts: no
+  tasks:
+    - ping:
+
+    - name: Customize the webservers
+      include_role:
+        name: gocustom
+
+- hosts: webserver
+  connection: local
+  tags: delete
+  gather_facts: no
+  tasks:
+    - name: Delete the webserver
+      include_role:
+        name: delete
+
+
+# VM snapshot managment roles
+- hosts: webserver
+  connection: local
+  tags: vmsnapshot
+  gather_facts: no
+  tasks:
+    - name: Take the snapshot of webservers
+      include_role:
+        name: vmsnapshot
+
+- hosts: webserver
+  connection: local
+  tags: vmsnapshotrevert
+  gather_facts: no
+  tasks:
+    - name: Revert the snapshot of webservers
+      include_role:
+        name: vmsnapshotrevert
+
+- hosts: webserver
+  connection: local
+  tags: vmsnapshotremove
+  gather_facts: no
+  tasks:
+    - name: Remove the snapshot of webservers
+      include_role:
+        name: vmsnapshotremove
+
