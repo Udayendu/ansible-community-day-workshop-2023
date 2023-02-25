@@ -1,0 +1,55 @@
+---
+- name: Set timezone
+  timezone:
+    name: '{{ timezone }}'
+
+- name: Copy the chronyd file
+  copy:
+    src: "{{ role_path }}/files/chronyd"
+    dest: /etc/sysconfig/chronyd
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy the chrony.conf template file
+  template:  src="{{ role_path }}/files/chrony.conf.j2"  dest=/etc/chrony.conf
+
+- name: Copy the yum file
+  copy:
+    src: "{{ role_path }}/files/epel-yum.repo"
+    dest: /etc/yum.repos.d/lab-yum.repo
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Set the NTP to true
+  command: "{{ item }}"
+  with_items:
+    - timedatectl set-ntp true
+
+- name: Start and enable chronyd
+  systemd:
+    name: chronyd
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+
+- name: Stop and disable the firewalld
+  systemd:
+    name: firewalld
+    enabled: no
+    state: stopped
+    masked: yes  
+
+- name: Install supporting packages
+  package:
+    name: '{{ item }}'
+    state: latest    
+  with_items:
+    - telnet
+    - elinks
+
+- name: Reboot the system post change
+  reboot:
+    reboot_timeout: 300
+    msg: "Reboot initiated by Ansible"

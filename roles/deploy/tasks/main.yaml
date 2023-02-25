@@ -1,0 +1,54 @@
+---
+- name: Gather info from Linux Template
+  vmware_guest_info:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    datacenter: '{{ vsphere_datacenter }}'
+    name: '{{ lin_temp }}'
+    validate_certs: 'no'
+  delegate_to: localhost
+  register: wdc_info
+
+- name: Deploying vm from '{{ lin_temp }}'
+  vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    datacenter: '{{ vsphere_datacenter }}'
+    cluster: "{{ wdc_info['instance']['hw_cluster'] }}"
+    datastore: "{{ wdc_info['instance']['hw_datastores'][0] }}"
+    name: '{{ inventory_hostname }}'
+    resource_pool: '{{ resource_pool }}'
+    template: '{{ lin_temp }}'
+    folder: "{{ wdc_info['instance']['hw_folder'] }}"
+    validate_certs: 'no'
+    networks:
+    - name: '{{ Mgmt_network }}'
+      ip: "{{ Mgmt_network_ipv4 }}"
+      netmask: '{{ Mgmt_network_nmv4 }}'
+      gateway: '{{ Mgmt_network_gwv4 }}'
+      device_type: vmxnet3
+      connected: True
+      start_connected: True
+      type: static
+    state: poweredoff
+    customization:
+      hostname: "{{ vsphere_vm_hostname }}"
+      domain: '{{ dns_domain }}'
+      dns_servers:
+        - '{{ dns_server1 }}'
+        - '{{ dns_server2 }}'
+  delegate_to: localhost
+
+- name: Start the vm
+  vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    datacenter: '{{ vsphere_datacenter }}'
+    cluster: "{{ wdc_info['instance']['hw_cluster'] }}"
+    validate_certs: 'no'
+    name: '{{ inventory_hostname }}'
+    state: poweredon
+    wait_for_ip_address: yes

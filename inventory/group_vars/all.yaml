@@ -1,0 +1,30 @@
+# vCenter Login Information
+vcenter_hostname: ''
+vcenter_username: 'ansibledemo@vsphere.local'
+vcenter_password: ''
+
+# Variable entries for Linux virtual machine
+vsphere_datacenter: ''
+resource_pool: ''
+
+# VM Network Components
+Mgmt_network: 'VM Network'
+Mgmt_network_nmv4: '255.255.255.0'
+Mgmt_network_gwv4: ''
+
+# Tempalate of Red Hat Linux Server
+lin_temp: 'rhel7-server-x86_64-template'
+
+# Timezone and NTP Server
+# Use below command on a linux system to get timezone:
+## timedatectl list-timezones
+timezone: 'Etc/UTC'
+ntp_server:
+  - ''
+  - ''
+
+# DNS server details
+dns_server1: ''
+dns_server2: ''
+dns_domain: ''
+

@@ -1,0 +1,11 @@
+---
+- name: Deleting the vms from vCenter
+  vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    validate_certs: 'no'
+    name: '{{ inventory_hostname }}'
+    force: yes
+    state: absent
+  delegate_to: localhost  

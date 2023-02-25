@@ -1,0 +1,12 @@
+[webserver]
+xxxx_xxxxxx  Mgmt_network_ipv4='xxx.xxx.xxx.xxx' vsphere_vm_hostname='xxxxxx'
+
+[gowebserver]
+xxx.xxx.xxx.xxx
+
+[gowebserver:vars]
+ansible_connection=ssh
+ansible_user=root
+ansible_python_interpreter=/usr/bin/python2.7
+ansible_password=Avaya123$
+ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
