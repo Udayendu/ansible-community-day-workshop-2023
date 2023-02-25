@@ -5,7 +5,7 @@ val = 'Ansible-Demo-DC-IND-Agent'
 val = 'Ansible-Demo-DC-US-Agent'
 }
 
-registryLogin = "hub.docker.com"
+registryLogin = "index.docker.io/v1/"
 repoURL = "uskar/alpinedevops:latest"
 dockerOpts = "-v /opt/devops/ansibledemo:/opt/ansibledemo"
 
