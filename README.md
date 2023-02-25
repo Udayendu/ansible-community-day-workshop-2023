@@ -66,3 +66,8 @@
 
   > $ ansible-playbook -i inventory webserver.yaml --tags "vmsnapshotremove"
 
+
+### Design Diagram
+
+  ![doagram](https://user-images.githubusercontent.com/1809177/221341460-b444c21c-8898-4270-b1b0-9c81289b4400.png)
+       
