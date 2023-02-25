@@ -32,9 +32,12 @@
   
   > $ docker build --no-cache=true -f <file_name>.dockerfile -t <docker_registry>/alpinedevops:latest
 
-- To push the docker image, use the below command:
+- To login to the hub.docker.com, use the below command:
 
   > $ docker login
+
+- To push the docker image, use the below command:
+
   > $ docker push <docker_registry>/alpinedevops:latest
 
 
