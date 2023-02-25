@@ -322,7 +322,7 @@ dns_domain: '$DNS_Domain'
         steps {
             script {
                 DockerOpts = "${dockerOpts} -v ${env.HOME}:${env.HOME}"
-                docker.withRegistry("https://${repoURL}", "docker-registry-login01") {
+                docker.withRegistry("https://${registryLogin}", "docker-registry-login01") {
                     docker.image("${repoURL}").pull()
                     docker.image("${repoURL}").inside(DockerOpts) {
                         echo 'Starting the WevServers deployment....'
