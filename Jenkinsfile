@@ -7,7 +7,6 @@ val = 'Ansible-Demo-DC-US-Agent'
 
 registryLogin = "index.docker.io/v1/"
 repoURL = "uskar/alpinedevops:latest"
-dockerOpts = "-v /opt/devops/ansibledemo:/opt/ansibledemo"
 
 pipeline {
 agent {
@@ -321,10 +320,9 @@ dns_domain: '$DNS_Domain'
     stage('WebServers Deployment') {
         steps {
             script {
-                DockerOpts = "${dockerOpts} -v ${env.HOME}:${env.HOME}"
                 docker.withRegistry("https://${registryLogin}", "docker-registry-login01") {
                     docker.image("${repoURL}").pull()
-                    docker.image("${repoURL}").inside(DockerOpts) {
+                    docker.image("${repoURL}").inside() {
                         echo 'Starting the WevServers deployment....'
                         sh """
                         ansible-playbook -i inventory webserver.yaml --tags "deploy"
@@ -338,10 +336,9 @@ dns_domain: '$DNS_Domain'
     stage('Guest OS Customization') {
         steps {
             script {
-                DockerOpts = "${dockerOpts} -v ${env.HOME}:${env.HOME}"
                 docker.withRegistry("https://${registryLogin}", "docker-registry-login01") {
                     docker.image("${repoURL}").pull()
-                    docker.image("${repoURL}").inside(DockerOpts) {
+                    docker.image("${repoURL}").inside() {
                         echo 'Starting the guest os customization'
                         sh """
                         ansible-playbook -i inventory webserver.yaml --tags "oscustom"
@@ -356,10 +353,9 @@ dns_domain: '$DNS_Domain'
     stage('Snapshot Creation') {
         steps {
             script {
-                DockerOpts = "${dockerOpts} -v ${env.HOME}:${env.HOME}"
                 docker.withRegistry("https://${registryLogin}", "docker-registry-login01") {
                     docker.image("${repoURL}").pull()
-                    docker.image("${repoURL}").inside(DockerOpts) {
+                    docker.image("${repoURL}").inside() {
                         echo 'Starting the snapshot creation process'
                         sh """
                         ansible-playbook -i inventory webserver.yaml --tags "vmsnapshot"
